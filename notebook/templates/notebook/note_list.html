@@ -1,0 +1,101 @@
+{% load calendar_extras %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Notes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            let h = now.getHours();
+            let m = now.getMinutes();
+            let s = now.getSeconds();
+            h = h < 10 ? '0' + h : h;
+            m = m < 10 ? '0' + m : m;
+            s = s < 10 ? '0' + s : s;
+            document.getElementById('clock').textContent = h + ':' + m + ':' + s;
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            updateClock();
+            setInterval(updateClock, 1000);
+        });
+    </script>
+</head>
+<body class="bg-gradient-to-br from-[#1a1333] to-[#2d1e4a] min-h-screen flex flex-col items-center py-10">
+    <a href="{% url 'landing' %}" class="mb-6 px-6 py-2 bg-[#6d28d9] hover:bg-[#5b21b6] text-white rounded-full shadow-lg font-bold text-lg transition">Notebook Cover</a>
+    <div class="bg-[#2d1e4a] p-8 rounded-2
+        <h2 class="text-3xl font-bold text-center text-[#e5e7eb] mb-6">Your Notes</h2>
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-2 text-center">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="flex justify-end mb-4">
+            <a href="{% url 'note_create' %}" class="bg-[#a78bfa] hover:bg-[#6d28d9] text-[#2d1e4a] font-bold px-4 py-2 rounded-lg transition">+ New Note</a>
+        </div>
+        <div class="mb-8 flex flex-col items-center justify-center">
+            <div id="clock" class="text-2xl font-mono text-[#a78bfa] mb-2"></div>
+            <div class="bg-[#1a1333] p-4 rounded-lg shadow border border-[#6d28d9]">
+                <h3 class="text-lg font-semibold text-center mb-2 text-[#e5e7eb]">{{ today|date:'F Y' }}</h3>
+                <table class="w-full text-center text-[#e5e7eb]">
+                    <thead>
+                        <tr>
+                            <th class="px-2">Su</th><th class="px-2">Mo</th><th class="px-2">Tu</th><th class="px-2">We</th><th class="px-2">Th</th><th class="px-2">Fr</th><th class="px-2">Sa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for week in today|date:'Y-m-01'|make_calendar %}
+                        <tr>
+                            {% for day in week %}
+                                {% if day %}
+                                    <td class="px-2 py-1
+                                        {% if day == today.day %}bg-[#a78bfa] text-[#2d1e4a] font-bold rounded{% endif %}
+                                        {% for note in notes %}{% if note.scheduled_date and note.scheduled_date.day == day and note.scheduled_date.month == today.month and note.scheduled_date.year == today.year %} border-2 border-[#a78bfa] bg-[#4c3575] text-[#a78bfa] font-bold rounded {% endif %}{% endfor %}">
+                                        <div>
+                                            {{ day }}
+                                            {% for note in notes %}
+                                                {% if note.scheduled_date and note.scheduled_date.day == day and note.scheduled_date.month == today.month and note.scheduled_date.year == today.year %}
+                                                    <div class="mt-1 text-xs text-[#a78bfa] whitespace-nowrap">
+                                                        <span title="{{ note.title }} at {{ note.scheduled_time|default:'--:--' }}">•</span>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                {% else %}
+                                    <td class="px-2 py-1"></td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% if notes %}
+            <ul>
+                {% for note in notes %}
+                    <li class="mb-4 p-4 border border-[#6d28d9] rounded-lg flex justify-between items-center bg-[#20143a]">
+                        <div>
+                            <h3 class="text-xl font-semibold text-[#a78bfa]">{{ note.title }}</h3>
+                            <p class="text-[#e5e7eb]">{{ note.content|truncatechars:100 }}</p>
+                            <span class="text-xs text-[#a78bfa]">Created: {{ note.date_created }}</span>
+                        </div>
+                        <div class="flex flex-col gap-2 ml-4">
+                            <a href="{% url 'note_edit' note.pk %}" class="text-[#a78bfa] hover:underline">Edit</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-center text-[#a78bfa]">No notes yet. Click "+ New Note" to create your first note!</p>
+        {% endif %}
+    </div>
+</body>
+</html>

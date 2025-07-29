@@ -7,6 +7,7 @@ class Note(models.Model):
     content = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     scheduled_date = models.DateField(null=True, blank=True)
+    scheduled_time = models.TimeField(null=True, blank=True)
     photo = models.ImageField(upload_to='note_photos/', null=True, blank=True)
 
     def __str__(self):

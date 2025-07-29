@@ -5,11 +5,13 @@ from .forms import NoteForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib import messages
+import datetime
 
 @login_required
 def note_list(request):
     notes = Note.objects.filter(user=request.user).order_by('-date_created')
-    return render(request, 'notebook/note_list.html', {'notes': notes})
+    today = datetime.date.today()
+    return render(request, 'notebook/note_list.html', {'notes': notes, 'today': today})
 
 @login_required
 def note_create(request):
@@ -28,6 +30,10 @@ def note_create(request):
 def note_edit(request, pk):
     note = get_object_or_404(Note, pk=pk, user=request.user)
     if request.method == 'POST':
+        if 'delete' in request.POST:
+            note.delete()
+            messages.success(request, 'Note deleted successfully!')
+            return redirect('note_list')
         form = NoteForm(request.POST, request.FILES, instance=note)
         if form.is_valid():
             form.save()
@@ -40,9 +46,9 @@ def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('note_list')
+            form.save()
+            messages.success(request, 'Registration successful! You can now log in.')
+            return redirect('login')
     else:
         form = UserCreationForm()
     return render(request, 'notebook/register.html', {'form': form})
@@ -63,3 +69,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def landing_page(request):
+    return render(request, 'notebook/landing.html')
+
