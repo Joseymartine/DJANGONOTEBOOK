@@ -25,6 +25,17 @@
                     {% endif %}
                 </div>
             {% endfor %}
+            <div class="flex gap-4">
+                <div class="w-1/2">
+                    <label for="id_scheduled_date" class="block text-[#a78bfa] font-medium mb-1">Schedule Date</label>
+                    <input type="date" name="scheduled_date" id="id_scheduled_date" class="w-full border border-[#a78bfa] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a78bfa] bg-[#20143a] text-[#e5e7eb]">
+                </div>
+                <div class="w-1/2">
+                    <label for="id_scheduled_time" class="block text-[#a78bfa] font-medium mb-1">Schedule Time</label>
+                    <input type="time" name="scheduled_time" id="id_scheduled_time" class="w-full border border-[#a78bfa] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a78bfa] bg-[#20143a] text-[#e5e7eb]">
+                </div>
+            </div>
+            <div class="mt-2 text-xs text-[#a78bfa]">Set a date and time to schedule a reminder for this note.</div>
             {% if form.non_field_errors %}
                 <div class="text-red-500 text-sm mb-2">{{ form.non_field_errors|striptags }}</div>
             {% endif %}

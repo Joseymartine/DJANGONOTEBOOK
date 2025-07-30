@@ -85,7 +85,10 @@
                         <div>
                             <h3 class="text-xl font-semibold text-[#a78bfa]">{{ note.title }}</h3>
                             <p class="text-[#e5e7eb]">{{ note.content|truncatechars:100 }}</p>
-                            <span class="text-xs text-[#a78bfa]">Created: {{ note.date_created }}</span>
+                            <span class="text-xs text-[#a78bfa]">Created: {{ note.date_created|date:'M d, Y H:i' }}</span>
+                            {% if note.scheduled_date %}
+                                <span class="block text-xs text-[#a78bfa] mt-1">Scheduled: {{ note.scheduled_date|date:'M d, Y' }}{% if note.scheduled_time %} at {{ note.scheduled_time|time:'H:i' }}{% endif %}</span>
+                            {% endif %}
                         </div>
                         <div class="flex flex-col gap-2 ml-4">
                             <a href="{% url 'note_edit' note.pk %}" class="text-[#a78bfa] hover:underline">Edit</a>
