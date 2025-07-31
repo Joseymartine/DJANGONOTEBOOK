@@ -18,9 +18,11 @@ class NoteForm(forms.ModelForm):
             'class': 'w-full border border-[#a78bfa] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a78bfa] bg-[#20143a] text-[#e5e7eb]'
         })
     )
+    photo = forms.ImageField(required=False)
+    attachment = forms.FileField(required=False, help_text='Upload a file (PDF, DOCX, etc.)')
     class Meta:
         model = Note
-        fields = ['title', 'content', 'scheduled_date', 'scheduled_time']
+        fields = ['title', 'content', 'scheduled_date', 'scheduled_time', 'photo', 'attachment']
 
 
 class CustomRegisterForm(UserCreationForm):

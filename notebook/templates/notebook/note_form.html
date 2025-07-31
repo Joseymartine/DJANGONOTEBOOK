@@ -13,29 +13,42 @@
         </h2>
         <form method="post" enctype="multipart/form-data" class="space-y-4">
             {% csrf_token %}
-            {% for field in form %}
-                <div>
-                    <label for="{{ field.id_for_label }}" class="block text-[#a78bfa] font-medium mb-1">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.help_text %}
-                        <div class="text-xs text-[#a78bfa] mt-1">{{ field.help_text }}</div>
-                    {% endif %}
-                    {% if field.errors %}
-                        <div class="text-red-500 text-sm mt-1">{{ field.errors|striptags }}</div>
-                    {% endif %}
-                </div>
-            {% endfor %}
+            <div>
+                <label for="id_title" class="block text-[#a78bfa] font-medium mb-1">Title</label>
+                {{ form.title }}
+            </div>
+            <div>
+                <label for="id_content" class="block text-[#a78bfa] font-medium mb-1">Content</label>
+                {{ form.content }}
+            </div>
             <div class="flex gap-4">
                 <div class="w-1/2">
                     <label for="id_scheduled_date" class="block text-[#a78bfa] font-medium mb-1">Schedule Date</label>
-                    <input type="date" name="scheduled_date" id="id_scheduled_date" class="w-full border border-[#a78bfa] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a78bfa] bg-[#20143a] text-[#e5e7eb]">
+                    {{ form.scheduled_date }}
                 </div>
                 <div class="w-1/2">
                     <label for="id_scheduled_time" class="block text-[#a78bfa] font-medium mb-1">Schedule Time</label>
-                    <input type="time" name="scheduled_time" id="id_scheduled_time" class="w-full border border-[#a78bfa] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a78bfa] bg-[#20143a] text-[#e5e7eb]">
+                    {{ form.scheduled_time }}
                 </div>
             </div>
-            <div class="mt-2 text-xs text-[#a78bfa]">Set a date and time to schedule a reminder for this note.</div>
+            <div class="pt-2 pb-1 border-t border-[#a78bfa] mt-4 mb-2">
+                <span class="text-[#a78bfa] font-semibold text-sm">Attachments</span>
+            </div>
+            <div>
+                <label for="id_photo" class="block text-[#a78bfa] font-medium mb-1">Photo</label>
+                {{ form.photo }}
+                {% if form.photo.help_text %}
+                    <div class="text-xs text-[#a78bfa] mt-1">{{ form.photo.help_text }}</div>
+                {% endif %}
+            </div>
+            <div>
+                <label for="id_attachment" class="block text-[#a78bfa] font-medium mb-1">File Attachment</label>
+                {{ form.attachment }}
+                {% if form.attachment.help_text %}
+                    <div class="text-xs text-[#a78bfa] mt-1">{{ form.attachment.help_text }}</div>
+                {% endif %}
+            </div>
+            <div class="mt-2 text-xs text-[#a78bfa]">Set a date and time to schedule a reminder for this note. You can also upload a photo or attach a file (PDF, DOCX, etc.).</div>
             {% if form.non_field_errors %}
                 <div class="text-red-500 text-sm mb-2">{{ form.non_field_errors|striptags }}</div>
             {% endif %}

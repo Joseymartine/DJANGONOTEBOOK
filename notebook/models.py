@@ -9,6 +9,7 @@ class Note(models.Model):
     scheduled_date = models.DateField(null=True, blank=True)
     scheduled_time = models.TimeField(null=True, blank=True)
     photo = models.ImageField(upload_to='note_photos/', null=True, blank=True)
+    attachment = models.FileField(upload_to='note_attachments/', null=True, blank=True)
 
     def __str__(self):
         return self.title
