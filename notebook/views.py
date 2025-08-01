@@ -6,6 +6,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib import messages
 import datetime
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from .forms import CustomRegisterForm
 
 @login_required
 def note_list(request):
@@ -44,13 +46,13 @@ def note_edit(request, pk):
 
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomRegisterForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Registration successful! You can now log in.')
             return redirect('login')
     else:
-        form = UserCreationForm()
+        form = CustomRegisterForm()
     return render(request, 'notebook/register.html', {'form': form})
 
 def login_view(request):
@@ -72,4 +74,20 @@ def logout_view(request):
 
 def landing_page(request):
     return render(request, 'notebook/landing.html')
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'notebook/password_reset.html'
+    email_template_name = 'notebook/password_reset_email.html'
+    subject_template_name = 'notebook/password_reset_subject.txt'
+    success_url = '/password-reset/done/'
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'notebook/password_reset_done.html'
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'notebook/password_reset_confirm.html'
+    success_url = '/login/'
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'notebook/password_reset_complete.html'
 

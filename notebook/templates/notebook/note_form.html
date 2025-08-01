@@ -37,6 +37,7 @@
             <div>
                 <label for="id_photo" class="block text-[#a78bfa] font-medium mb-1">Photo</label>
                 {{ form.photo }}
+                {% if not form.photo %}<input type="file" name="photo" id="id_photo" class="w-full border border-[#a78bfa] rounded px-3 py-2 bg-[#20143a] text-[#e5e7eb] focus:outline-none focus:ring-2 focus:ring-[#a78bfa]">{% endif %}
                 {% if form.photo.help_text %}
                     <div class="text-xs text-[#a78bfa] mt-1">{{ form.photo.help_text }}</div>
                 {% endif %}
@@ -44,6 +45,7 @@
             <div>
                 <label for="id_attachment" class="block text-[#a78bfa] font-medium mb-1">File Attachment</label>
                 {{ form.attachment }}
+                {% if not form.attachment %}<input type="file" name="attachment" id="id_attachment" class="w-full border border-[#a78bfa] rounded px-3 py-2 bg-[#20143a] text-[#e5e7eb] focus:outline-none focus:ring-2 focus:ring-[#a78bfa]">{% endif %}
                 {% if form.attachment.help_text %}
                     <div class="text-xs text-[#a78bfa] mt-1">{{ form.attachment.help_text }}</div>
                 {% endif %}

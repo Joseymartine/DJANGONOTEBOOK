@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-br from-[#1a1333] to-[#2d1e4a] flex items-center justify-center h-screen">
+    {% block content %}
     <div class="bg-[#2d1e4a] p-8 rounded-2xl shadow-xl w-full max-w-md border border-[#6d28d9]">
         <h2 class="text-3xl font-bold text-center text-[#e5e7eb] mb-6">Notebook Login</h2>
         {% if messages %}
@@ -36,6 +37,10 @@
         <p class="text-sm text-[#a78bfa] text-center mt-4">
             Don't have an account? <a href="{% url 'register' %}" class="text-[#a78bfa] hover:underline font-semibold">Register here</a>
         </p>
+        <div class="mt-4 text-center">
+            <a href="{% url 'password_reset' %}" class="text-[#a78bfa] hover:underline font-semibold">Forgot password?</a>
+        </div>
     </div>
+    {% endblock %}
 </body>
 </html>
