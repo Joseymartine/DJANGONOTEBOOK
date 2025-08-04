@@ -92,10 +92,10 @@
                         </div>
                         <div class="flex flex-col gap-2 ml-4">
                             <a href="{% url 'note_edit' note.pk %}" class="text-[#a78bfa] hover:underline">Edit</a>
-                            {% if note.photo %}
+                            {% if note.photo and note.photo.url %}
                                 <a href="{{ note.photo.url }}" target="_blank" class="bg-[#a78bfa] hover:bg-[#6d28d9] text-[#2d1e4a] font-bold py-1 px-3 rounded transition text-center">View Photo</a>
                             {% endif %}
-                            {% if note.attachment %}
+                            {% if note.attachment and note.attachment.url %}
                                 <a href="{{ note.attachment.url }}" target="_blank" class="bg-[#a78bfa] hover:bg-[#6d28d9] text-[#2d1e4a] font-bold py-1 px-3 rounded transition text-center">Download File</a>
                             {% endif %}
                         </div>
